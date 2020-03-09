@@ -20,19 +20,24 @@ public class FileUtils {
             lines.remove(0);
 
             for (String line: lines) {
-                String[] columns = line.split(",");
+                String[] columns = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 Rekord rekord = new Rekord();
                 rekord.setSno(Integer.parseInt(columns[0]));
                 rekord.setDate(columns[1]);
                 rekord.setProvince(columns[2]);
                 rekord.setCountry(columns[3]);
                 rekord.setLast(columns[4]);
-                rekord.setConfirmed(Integer.parseInt(columns[5]);
-                rekord.setDeaths(Integer.parseInt(columns[6]));
-                rekord.setRecorved(Integer.parseInt(columns[7]);
+                rekord.setConfirmed(Double.parseDouble(columns[5]));
+                rekord.setDeaths(Double.parseDouble(columns[6]));
+                rekord.setRecorved(Double.parseDouble(columns[7]));
+                rekords.add(rekord);
 
-                
+                System.out.println(line);
+
             }
+
+            JSONUtils jsonUtils = new JSONUtils();
+            jsonUtils.writeList("COVID.json", rekords);
 
         } catch (IOException e) {
             e.printStackTrace();
